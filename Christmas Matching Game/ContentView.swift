@@ -9,23 +9,51 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        ZStack{
-            Image("Snowman")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                Text("Hello, world!")
+        NavigationView {
+            ZStack{
+                Image("Snowman")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+                
+                CustomText(text: "Christmas Matching Game")
+                    .foregroundColor(.red)
+                    .font(.largeTitle).bold()
+                    .background(Color.mint)
+                    .position(x:218,y:350)
+                    .cornerRadius(10)
+                
+                VStack {
+                    NavigationLink(destination: SecondScreen()) {
+                        
+                        CustomText(text: "Enter Game")
+                            .padding()
+                            .font(.largeTitle).bold()
+                            .background(Color.mint)
+                            .cornerRadius(10)
+                            .position(x: 218, y: 750)
+                    }
+                }
             }
-            .padding()
         }
     }
 }
-
+struct CustomText: View {
+    let text: String
+    var body: some View {
+        Text(text).font(Font.custom("Marker Felt", size: 33))
+            .foregroundColor(.red)
+            .background(Color.mint)
+            .cornerRadius(10)
+    }
+}
+struct CustomTextButton: View {
+    let text: String
+    var body: some View {
+        Text(text).font(Font.custom("Marker Felt", size: 36))
+            .foregroundColor(.mint)
+    }
+}
 #Preview {
     ContentView()
 }
