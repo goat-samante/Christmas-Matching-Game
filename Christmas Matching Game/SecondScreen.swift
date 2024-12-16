@@ -19,53 +19,85 @@ struct SecondScreen: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-        Text("Placeholder")
+            Text("Placeholder")
                 .font(.largeTitle).bold()
                 .background(Color.white)
                 .position(x: 379, y:170)
                 .padding()
+            
+            }
+        }
+        func rearrangeItems() {
+            rearrangedItems = (items + items).shuffled()
+        }
+        func cardTapped(index: Int) {
+            if selectedItems.count == 2 {
+                selectedItems.removeAll()
+            }
+            
+            if !matchedItems.contains(index) {
+                selectedItems.append(index)
+                if selectedItems.count == 2 {
+                    
+                }
+            }
+        }
+        func checkForWinner() {
+            let firstIndex = selectedItems [0]
+            let secondIndex = selectedItems [1]
+            if rearrangedItems[firstIndex] == rearrangedItems[secondIndex] {
+                matchedItems = selectedItems
+                if matchedItems.count == rearrangedItems.count {
+                    gameWon = true
+                }
+            }
+        }
+        func restartMatch() {
+            matchedItems.removeAll()
+            selectedItems.removeAll()
+            rearrangeItems()
         }
     }
-   
-#Preview {
-    SecondScreen()
-}
-struct ItemView: View {
-    var symbol: String
-    var isFlipped: Bool
     
-    var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(isFlipped ? Color.red : Color.green)
-                .frame(width: 50, height: 70)
-                .clipShape(RoundedRectangle(cornerRadius: 10)).shadow(radius: 5)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray, lineWidth: 2)
+    #Preview {
+        SecondScreen()
+    }
+    struct ItemView: View {
+        var symbol: String
+        var isFlipped: Bool
+        
+        var body: some View {
+            ZStack {
+                Rectangle()
+                    .fill(isFlipped ? Color.red : Color.green)
+                    .frame(width: 50, height: 70)
+                    .clipShape(RoundedRectangle(cornerRadius: 10)).shadow(radius: 5)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray, lineWidth: 2)
                     )
-            if isFlipped {
-                Text(symbol)
-                    .font(.largeTitle)
-                    .transition(.scale)
+                if isFlipped {
+                    Text(symbol)
+                        .font(.largeTitle)
+                        .transition(.scale)
+                }
             }
         }
     }
-}
-struct GridStack: View {
-    var rows: Int
-    var columns: Int
-    let content: (Int, Int) -> AnyView
-    
-    var body: some View {
-        VStack(spacing: 10) {
-            ForEach(0 ..< rows, id: \.self) { row in
-                HStack(spacing: 10) {
-                    ForEach(0..<self.columns, id: \.self) { column in
-                        content(row, column)
+    struct GridStack: View {
+        var rows: Int
+        var columns: Int
+        let content: (Int, Int) -> AnyView
+        
+        var body: some View {
+            VStack(spacing: 10) {
+                ForEach(0 ..< rows, id: \.self) { row in
+                    HStack(spacing: 10) {
+                        ForEach(0..<self.columns, id: \.self) { column in
+                            content(row, column)
+                        }
                     }
                 }
             }
         }
     }
-}
