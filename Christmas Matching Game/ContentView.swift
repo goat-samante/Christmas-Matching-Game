@@ -29,7 +29,7 @@ struct ContentView: View {
                         CustomText(text: "Enter Game")
                             .padding()
                             .font(.largeTitle).bold()
-                            .background(Color.mint)
+                            .background(Color.black)
                             .cornerRadius(10)
                             .position(x: 218, y: 750)
                     }
@@ -42,8 +42,8 @@ struct CustomText: View {
     let text: String
     var body: some View {
         Text(text).font(Font.custom("Marker Felt", size: 33))
-            .foregroundColor(.red)
-            .background(Color.mint)
+            .foregroundColor(.white)
+            .background(Color.black)
             .cornerRadius(10)
     }
 }
@@ -51,7 +51,7 @@ struct CustomTextButton: View {
     let text: String
     var body: some View {
         Text(text).font(Font.custom("Marker Felt", size: 36))
-            .foregroundColor(.mint)
+            .foregroundColor(.black)
     }
 }
 #Preview {
