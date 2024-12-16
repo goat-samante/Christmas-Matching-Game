@@ -8,24 +8,62 @@
 import SwiftUI
 
 struct SecondScreen: View {
-    @State private var items = ["🎄", "🎅🏻", "🎁", "☃️", "❄️", "🛷"]
+    @State private var items = ["🎄", "🎅🏻", "🎁", "☃️", "❄️", "🛷"] // cards for game
     @State private var rearrangedItems: [String] = []
     @State private var selectedItems: [Int] = []
     @State private var matchedItems: [Int] = []
     @State private var gameWon: Bool = false
     var body: some View {
         ZStack {
-            Image("Christmas Tree Indoor")
+            Image("Christmas Tree Indoor") // added chirstmas tree background image
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-            Text("Placeholder")
+            Text("Placeholder") // title for the christmas game
                 .font(.largeTitle).bold()
                 .background(Color.white)
                 .position(x: 379, y:170)
                 .padding()
-            
+            GridStack(rows: 2, columns: 6) { row, col in
+                let index = row * 6 + col
+                if index < rearrangedItems.count {
+                    return AnyView(
+                        ItemView(symbol: self.rearrangedItems[index], isFlipped: self.selectedItems.contains(index) ||
+                        self.matchedItems.contains(index))
+                        .onTapGesture {
+                            withAnimation(.smooth) {
+                                self.cardTapped(index: index)
+                            }
+                        }
+                    )
+                } else {
+                    return AnyView(EmptyView())
+                }
             }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 20).stroke(Color.red,lineWidth: 4))
+            .padding()
+            Button("Restart") {
+                withAnimation(.smooth) {
+                    self.restartMatch()
+                }
+            }
+            .font(.largeTitle)
+            .background()
+            .background(Color.white)
+            .foregroundStyle(.green)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .shadow(radius: 10)
+            .position(x: 400, y: 600)
+            }
+        .onAppear(perform: rearrangeItems)
+        .alert(isPresented: self.$gameWon) {
+            Alert(title: Text("Winner"), message: Text("YOU BEAT THE GAME"), dismissButton: .default(Text("Play Again"), action: {
+                withAnimation(.smooth) {
+                    self.restartMatch()
+                }
+            }))
+        }
         }
         func rearrangeItems() {
             rearrangedItems = (items + items).shuffled()
@@ -38,15 +76,15 @@ struct SecondScreen: View {
             if !matchedItems.contains(index) {
                 selectedItems.append(index)
                 if selectedItems.count == 2 {
-                    
+                    checkForWinner()
                 }
             }
         }
         func checkForWinner() {
-            let firstIndex = selectedItems [0]
-            let secondIndex = selectedItems [1]
+            let firstIndex = selectedItems[0]
+            let secondIndex = selectedItems[1]
             if rearrangedItems[firstIndex] == rearrangedItems[secondIndex] {
-                matchedItems = selectedItems
+                matchedItems += selectedItems
                 if matchedItems.count == rearrangedItems.count {
                     gameWon = true
                 }
