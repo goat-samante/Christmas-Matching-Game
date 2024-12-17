@@ -11,20 +11,16 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("Christmas Tree Indoor")
-                    .resizable()
+                Image("Christmas Tree Indoor") // christmas tree image
+                    .resizable() // properties for the image which allow it to shrink and fill the full screen. The .edgesIgnoringSafeArea allow for a clean look
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     Spacer()
-                    CustomText(text: "Christmas Matching Game")
-                        .foregroundColor(.red)
-                        .font(.largeTitle).bold()
-                        .background(Color.mint)
-                        .cornerRadius(10)
-                        .padding(.bottom, 20)
+                    CustomText(text: "Christmas Matching Game") // the title for the game
+                            .padding(.bottom, 20)
                     
-                    NavigationLink(destination: SecondScreen()) {
+                    NavigationLink(destination: SecondScreen()) { // teleports you to the screen with the game and contains the UI properties for the text for the button
                         CustomText(text: "Enter Game")
                             .padding()
                             .background(Color.black)
@@ -37,7 +33,7 @@ struct ContentView: View {
     }
 }
 
-struct CustomText: View {
+struct CustomText: View { // custom text settings and properties for all the text and the text on the other screen aswell.
     let text: String
     var body: some View {
         Text(text)
